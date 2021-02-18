@@ -1,0 +1,248 @@
+%% *Preparation*
+
+clear % remove all the data in workspace
+close all % close figures
+clc % clear command window
+%% *Is weight related to height? (height as independent variable)*
+
+%Height Data Sets
+a=[64 63 64 64 69 69 65 63 64 62 61 56 68 64 60 60 66];
+%a is female height data set
+b=[73 70 69 67 65 68 73 67 68 70 74 71 65 69 70 73 67];
+%b is male height data set
+c=[a b];
+%c is class height data set
+
+%Weight Data Sets
+O=[125 100 145 115 147 145 195 120 148 106 120 165 160 126 165 154 139];
+%O is female weight data set
+P=[151 185 201 180 135 140 190 133 130 165 145 140 270 170 180 168 180];
+%P is male weight data set
+Q=[O P];
+%Q is class weight data set
+
+%Plot weight vs. height(height as independent variable)
+figure
+plot(c, Q,'.'); %create a 2-D line plot  
+xlabel('height in inches');%label x-axis 
+ylabel('weight in pounds');%label y-axis
+title('weight vs. height(height as independent variable)')
+
+%plot regression of of responses in Q on the predictors in c
+stats=regstats(Q,c,'linear'); % create a linear regression of responses in Q on the predictors in c
+Rsquare=stats.rsquare %perform R^2 statistic to calculate r^2 value
+coeff=stats.beta; %compute regression coefficients
+m=coeff(1);%m is the axes intercept a
+n=coeff(2);% n is the optimal slope b
+ABC="The optimal slope(b)=";
+abc="the axes intercept(a)=";
+disp(ABC)
+disp(n)
+disp(abc)
+disp(m)
+regsig=stats.tstat; %output t statistics and p-values for regression coefficients
+tvalue=regsig.t; %output t statistics
+pvalue=regsig.pval; %output p value
+figure
+Q_fit=coeff(2)*c+coeff(1);
+plot(c,Q,'.')
+xlabel('height in inches');%label x-axis 
+ylabel('weight in pounds');%label y-axis
+title('weight vs. height(height as independent variable)')
+hold on %hold on allows us to plot another plot on the top of the first one
+plot(c,Q_fit)
+hold off %hold off sets the hold state to off
+
+%test hypothesis about correlation(null hypothesis: there is no relationship between two variables)
+r=sqrt(Rsquare);%r is correlation coefficient
+XY="correlation coefficient(r)=";
+disp(XY)
+disp(r)
+%% 
+% r=0.2423, which is between 0.2-0.4, shows that there is a weak  correlation 
+% between height and weight(credit to Dr. Fritton's slide).
+
+aaa="t-statistic for the regression slope=";
+bbb="p-value for the regression slope=";
+t1=tvalue(2);%t1 is the slope t-statistic
+p1=pvalue(2);%p1 is the probability of getting a t-value greater or equal to 14.4130 
+disp(aaa)
+disp(t1)
+disp(bbb)
+disp(p1)
+%% 
+% As calculated previously, y=a+bx(y is weight in pounds and x is height in 
+% inches) has a=28.0468 and b=1.8949.
+% 
+% The t value calculated for this estimation of relationship between weight 
+% and height(slope t-statistic) is 1.4130. The probability of getting a t-value 
+% greater or equal to 1.4130 is 0.1673, which is greater than 0.05(assume alpha=0.05).
+% 
+% therefore, at 0.05 level of significance, we cannot conclude there is significant 
+% relationship between height and weight.
+%% *Is weight related to height? (plot weight as independent variable)*
+
+%Plot weight versus height(weight as independent variable)
+figure
+plot(Q, c,'.'); %create a 2-D line plot  
+xlabel('weight in pounds');%label x-axis 
+ylabel('height in inches');%label y-axis
+stats1=regstats(c,Q,'linear'); % create a linear regression of responses in c on the predictors in Q
+Rsquare1=stats1.rsquare %perform R^2 statistic to calculate r^2 value 
+coeff1=stats1.beta; %compute regression coefficients
+mm=coeff1(1);%m is the axes intercept a
+nn=coeff1(2);% n is the optimal slope b
+disp(ABC)
+disp(nn)
+disp(abc)
+disp(mm)
+regsig1=stats1.tstat; %output t statistics and p-values for regression coefficients
+tval=regsig1.t; %output t statistics
+pval=regsig1.pval; %output pvalue for the regression 
+
+%plot regression of c on the predictors in Q
+figure
+c_fit1=coeff1(2)*Q+coeff1(1);
+plot(Q,c,'.')
+xlabel('weight in pounds');%label x-axis 
+ylabel('height in inches');%label y-axis
+hold on %hold on allows us to plot another plot on the top of the first one
+plot(Q,c_fit1)
+title('weight versus height(weight as independent variable)')
+hold off %hold off sets the hold state to off
+
+%test hypothesis about correlation(null hypothesis: there is no relationship between two variables)
+r1=sqrt(Rsquare1);
+disp(XY)
+disp(r1)
+%% 
+% r=0.2423, which is between 0.2-0.4, shows that there is a weak  correlation 
+% between height and weight(credit to Dr. Fritton's slide)
+
+t2=tval(2); %t2 is the slope t-statistic
+p2=pval(2); %p2 is the probability of getting a t-value greater or equal to 1.4130(slope p-value)
+disp(aaa)
+disp(t2)
+disp(bbb)
+disp(p2)
+%% 
+% As calculated previously, x=a+by(y is weight in pounds and x is height in 
+% inches) has a=61.7253 and b=0.0310.
+% 
+% The t value calculated for this estimation of relationship between weight 
+% and height(slope t-statistic) is 1.4130. The probability of getting a t-value 
+% greater or equal to 1.4130 is 0.1673, which is greater than 0.05(assume alpha=0.05).
+% 
+% therefore, at 0.05 level of significance, we cannot conclude there is significant 
+% relationship between height and weight.
+%% *Analysis of females and males: test for normal distribution*
+
+%Height Data Sets
+a=[64 63 64 64 69 69 65 63 64 62 61 56 68 64 60 60 66];
+%a is female height data set
+b=[73 70 69 67 65 68 73 67 68 70 74 71 65 69 70 73 67];
+%b is male height data set
+c=[a b];
+%c is class height data set
+
+%Weight Data Sets
+O=[125 100 145 115 147 145 195 120 148 106 120 165 160 126 165 154 139];
+%O is female weight data set
+P=[151 185 201 180 135 140 190 133 130 165 145 140 270 170 180 168 180];
+%P is male weight data set
+Q=[O P];
+%Q is class weight data set
+
+%test for normal distribution
+normplot(a) %create normal probabality plot for female height data set
+title('normal probabality plot for female height data set');
+xlabel('Height data(in inches)');
+normplot(b) %create normal probabality plot for male height data set 
+title('normal probabality plot for male height data set');
+xlabel('Height data(in inches)');
+normplot(O) %create normal probabality plot for female weight data set
+title('Normal Probability Plot for Female Weight Data Set');
+xlabel('weight data(in pounds)');
+normplot(P) %create normal probabality plot for male weight data set
+title('Normal Probability Plot for Male Weight Data Set');
+xlabel('weight data(in pounds)');
+%% 
+% According to normal probability plots, female height data set, male height 
+% data set, female weight data set, and male weight data set are normally distributed 
+% because most data points are near the line.
+% 
+% Since female height data set, male height data set, female weight data set, 
+% and male weight data set are normally distributed, parametric statistical methods 
+% can be applied to test for difference(see the normal probability plots combined 
+% in the last section).
+%% *Analysis of females and males: test for hypothesis 1(females are shorter than males)*
+
+%mean of male and female height data sets
+R=mean(a); %R is mean for female height data set
+r=mean(b); %r is mean for male height data set
+rrr="mean of female height data set(in inches)=";
+RRR="mean of male height data set(in inches)=";
+disp(rrr)
+disp(R)
+disp(RRR)
+disp(r)
+
+%test for difference between female height data set and male height data set 
+[h,p,ci]=ttest2(a,b,0.05)
+%% 
+% Since confidence interval is from -7.8585 to -3.5533, which does not include 
+% 0, we can conclude that there is difference between female and male height data 
+% sets at 5% signifcance level.					
+% 
+% Since mean for male height data set is greater than mean for female height 
+% data set(69.3529>63.6471), we can conclude data supports the hypothesis that 
+% females are shorter than males. 
+%% *Analysis of females and males: test for hypothesis 2(males weigh more than females)*
+
+%mean of male and female weight data sets
+R1=mean(O); %R1 is mean for female weight data set
+r1=mean(P); %r1 is mean for male weight data set
+rrrr="mean of female weight data set(in pounds)=";
+RRRR="mean of male weight data set(in pounds)=";
+disp(rrrr)
+disp(R1)
+disp(RRRR)
+disp(r1)
+%test for difference between female weight data set and male weight data set
+[h,p,ci]=ttest2(O,P,0.05)
+%% 
+% Since the confidence interval is from -49.5518 to -7.8600, which does not 
+% include zero, there is a significant difference between female height data set 
+% and male height data set at 5% signifcance level.
+% 
+% Since mean for male weight data set is greater than mean for female weight 
+% data set(168.4118>139.7059), we can conclude that data supports the hypothesis 
+% that males weigh more than females. 
+%% *Normal Probability Plots Combined*
+
+subplot(2,2,1)
+normplot(a) %create normal probabality plot for female height data set
+title('normal probabality plot for female height data');
+xlabel('Height data(in inches)');
+subplot(2,2,2)
+normplot(b) %create normal probabality plot for male height data set 
+title('normal probabality plot for male height data');
+xlabel('Height data(in inches)');
+subplot(2,2,3)
+normplot(O) %create normal probabality plot for female weight data set
+title('Normal Probability Plot for Female Weight Data');
+xlabel('weight data(in pounds)');
+subplot(2,2,4)
+normplot(P) %create normal probabality plot for male weight data set
+title('Normal Probability Plot for Male Weight Data');
+xlabel('weight data(in pounds)');
+%% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+%
